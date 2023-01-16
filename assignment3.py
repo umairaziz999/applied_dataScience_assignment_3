@@ -177,9 +177,7 @@ def clustering_data(data,country,indicator,col_name,second_indicator,indicator_n
     plt.ylabel(col_name,fontsize=18)
     plt.title(country,fontsize=18)
     plt.legend(loc="upper left")
-    plt.show()
-    print(cen)
-    print(g)
+    return plt
     
 def correlation_graph(data,country):
     co_burning=data_exploration(data,country,"Emission Totals - Emissions (CO2eq) (AR5) - Burning - Crop residues")
@@ -200,8 +198,6 @@ def correlation_graph(data,country):
     plt.show()
     
     
-    pd.plotting.scatter_matrix(indicators_data, figsize=(10,10), s=5, alpha=0.8)
-    plt.show()
     
     
     
@@ -259,12 +255,17 @@ def clustering_data1(data,country,indicator,col_name,second_indicator,indicator_
 
 if __name__ == "__main__":
     data,transpose_data=read_data("data.csv")
-    
+    fig = plt.figure()
    
     data_fitting(data,"Pakistan","GDP (current US$)","GDP")
-    data_fitting(data,"Pakistan","Emission Totals - Emissions (CO2eq) (AR5) - Burning - Crop residues","CO2")
-    data_fitting(data,"Pakistan","Emission Totals - Emissions (CO2eq) (AR5) - Crop Residues","CO2-Residues")
+    data_fitting(data,"Pakistan","Emission Totals - Emissions (CO2eq) (AR5) - Burning - Crop residues","CO2 Burning - Crop residues")
     clustering_data1(data,"Pakistan","GDP (current US$)","gdp","Emission Totals - Emissions (CO2eq) (AR5) - Crop Residues","Crop Residues")
+    data_fitting(data,"India","GDP (current US$)","GDP")
+    data_fitting(data,"India","Emission Totals - Emissions (CO2eq) (AR5) - Burning - Crop residues","CO2 Burning - Crop residues")
+    clustering_data1(data,"India","GDP (current US$)","gdp","Emission Totals - Emissions (CO2eq) (AR5) - Crop Residues","Crop Residues")
+    correlation_graph(data,"Pakistan")
+    
+    
    
 
 
