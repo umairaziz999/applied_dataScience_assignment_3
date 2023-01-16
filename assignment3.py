@@ -34,10 +34,34 @@ def logistic(t, n0, g, t0):
     return f
 
 def read_data(name):
+    '''
+    this function take file name and after reading the file return original data and transposed data
+    Parameters
+    ----------
+    name : contain the name of dataset.
+
+    Returns
+    -------
+    data : return a dataframe that contain indicators of world ecnomic.
+
+    '''
     data=pd.read_csv(name,encoding= 'unicode_escape',skip_blank_lines=True, na_filter=True)
     return data,data.T
     
 def data_exploration(data,country,series):
+    '''
+    this function take parameters and then return the series data that is required
+    Parameters
+    ----------
+    data : is dataframe that contain data indicators for cleaning.
+    country : contain the name of country that need to be taken into consideration.
+    series : contain the name of series that is going to b used for analysis.
+
+    Returns
+    -------
+    series_data : return the series data that we need from the whole dataset.
+
+    '''
     country_data=data[data['Country Name']==country]
     series_data=country_data[country_data["Series Name"]==series]
     return series_data
@@ -62,6 +86,20 @@ def norm_df(df, first=0, last=None):
         df[col] = norm(df[col])
     return df
 def data_fitting(data,country,indicator,col_name):
+    '''
+    this function take four parameters and perform exponentional function in curve fit for good fitting 
+    Parameters
+    ----------
+    data : is dataframe that contain data indicators for cleaning.
+    country : contain the name of country that need to be taken into consideration.
+    indicator : contain the name of series that is going to b used for analysis.
+    col_name : this variable contain the name of column to b used in the dafaframe.
+
+    Returns
+    -------
+    None.
+
+    '''
     gdp_data=data_exploration(data,country,indicator)
     gdp_data=gdp_data.drop(["Country Name","Country Code","Series Name","Series Code"], axis='columns')
     g=gdp_data.transpose()
@@ -112,6 +150,23 @@ def data_fitting(data,country,indicator,col_name):
     print("2050 between ", low, "and", up)
     
 def clustering_data(data,country,indicator,col_name,second_indicator,indicator_name):
+    '''
+    this function take six parameters and then train kmean model and perform clustring on data and then perform plot
+    
+    Parameters
+    ----------
+    data : is dataframe that contain data indicators for cleaning.
+    country : contain the name of country that need to be taken into consideration.
+    indicator : contain the name of series that is going to b used for analysis.
+    col_name : this vaiable contain the name of dataframe.
+    second_indicator : this variable contain the name of second indicator.
+    indicator_name : this variable contain the name of second column name.
+
+    Returns
+    -------
+    None.
+
+    '''
     gdp_data=data_exploration(data,country,indicator)
     gdp_data=gdp_data.drop(["Country Name","Country Code","Series Name","Series Code"], axis='columns')
     second_data=data_exploration(data,country,second_indicator)
@@ -180,6 +235,18 @@ def clustering_data(data,country,indicator,col_name,second_indicator,indicator_n
     plt.show()
     
 def correlation_graph(data,country):
+    '''
+    this function take two parameters and then plot heat map correlation of different indicators
+    Parameters
+    ----------
+    data : is dataframe that contain data indicators for cleaning.
+    country : contain the name of country that need to be taken into consideration.
+
+    Returns
+    -------
+    None.
+
+    '''
     co_burning=data_exploration(data,country,"Emission Totals - Emissions (CO2eq) (AR5) - Burning - Crop residues")
     co_crop=data_exploration(data,country,"Emission Totals - Emissions (CO2eq) (AR5) - Crop Residues")
     gdp=data_exploration(data,country,"GDP (current US$)")
@@ -201,7 +268,23 @@ def correlation_graph(data,country):
     
     
     
-def clustering_data1(data,country,indicator,col_name,second_indicator,indicator_name):
+def clustering_normalized_data(data,country,indicator,col_name,second_indicator,indicator_name):
+    '''
+    in this function we cluster the normalized data and show in the scatter plot
+    Parameters
+    ----------
+   data : is dataframe that contain data indicators for cleaning.
+   country : contain the name of country that need to be taken into consideration.
+   indicator : contain the name of series that is going to b used for analysis.
+   col_name : this vaiable contain the name of dataframe.
+   second_indicator : this variable contain the name of second indicator.
+   indicator_name : this variable contain the name of second column name.
+
+    Returns
+    -------
+    None.
+
+    '''
     gdp_data=data_exploration(data,country,indicator)
     gdp_data=gdp_data.drop(["Country Name","Country Code","Series Name","Series Code"], axis='columns')
     second_data=data_exploration(data,country,second_indicator)
@@ -249,6 +332,7 @@ def clustering_data1(data,country,indicator,col_name,second_indicator,indicator_
     plt.ylabel(indicator_name)
     plt.title(str("Clustrig Data Indicator of ")+country)
     plt.show()
+    
    
     
 
@@ -266,6 +350,7 @@ if __name__ == "__main__":
     clustering_data(data,"India","GDP (current US$)","gdp","Emission Totals - Emissions (CO2eq) (AR5) - Crop Residues","Crop Residues")
     correlation_graph(data,"Pakistan")
     correlation_graph(data,"India")
+    clustering_normalized_data(data,"India","GDP (current US$)","gdp","Emission Totals - Emissions (CO2eq) (AR5) - Crop Residues","Crop Residues")
     
    
 
